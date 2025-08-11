@@ -5,7 +5,7 @@ namespace MauiPeopleApp.Views;
 
 public partial class PersonListPage : ContentPage
 {
-    private PersonListViewModel ViewModel => BindingContext as PersonListViewModel;
+    private PersonListViewModel ViewModel => (PersonListViewModel)BindingContext;
 
     public PersonListPage()
     {
@@ -20,5 +20,16 @@ public partial class PersonListPage : ContentPage
             ViewModel.LoadPeopleCommand.Execute(null);
     }
 
-
+    
+    private async void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection?.FirstOrDefault() is not Person selected)
+            return;
+        
+        if (sender is CollectionView cv) cv.SelectedItem = null;
+        
+        Routing.RegisterRoute(nameof(PersonDetailPage), typeof(PersonDetailPage));
+         await Shell.Current.GoToAsync(nameof(PersonDetailPage), new Dictionary<string, object> { ["Person"] = selected });
+        
+    }
 }
