@@ -25,11 +25,10 @@ public partial class PersonListPage : ContentPage
     {
         if (e.CurrentSelection?.FirstOrDefault() is not Person selected)
             return;
-        
+
         if (sender is CollectionView cv) cv.SelectedItem = null;
-        
-        Routing.RegisterRoute(nameof(PersonDetailPage), typeof(PersonDetailPage));
-         await Shell.Current.GoToAsync(nameof(PersonDetailPage), new Dictionary<string, object> { ["Person"] = selected });
-        
+
+        await Shell.Current.GoToAsync(nameof(PersonDetailPage),
+            new Dictionary<string, object> { ["Person"] = selected });
     }
 }
